@@ -1,0 +1,174 @@
+/*
+SPACING SYSTEM (px)
+2 / 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 80 / 96 / 128
+
+FONT SIZE SYSTEM (px)
+10 / 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 44 / 52 / 62 / 74 / 86 / 98
+*/
+
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* GENERAL STYLES */
+
+body {
+  color: black;
+  font-family: sans-serif;
+  font-size: 14px;
+  /* text-decoration: none; */
+}
+
+/* NAV BAR */
+.main-header {
+  background-color: #f8f9fa;
+  height: 50px;
+  padding: 12px 64px;
+  box-shadow: 0 2px 4px 0 #00000015;
+}
+
+.main-nav-list {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  list-style: none;
+}
+
+.main-nav-link:nth-child(2) {
+  font-weight: bold;
+}
+
+.main-nav-list a:link,
+.main-nav-list a:visited {
+  text-decoration: none;
+  color: black;
+}
+
+.main-nav-list a:hover,
+.main-nav-list a:active {
+  text-decoration: none;
+  color: black;
+}
+
+.contact-me-btn:link,
+.contact-me-btn:visited {
+  font-weight: bold;
+  background-color: #1f2937;
+  color: white !important;
+  padding: 0.3rem 1rem;
+  border-radius: 6px;
+}
+
+.contact-me-btn:hover,
+.contact-me-btn:active {
+  box-shadow: 0 5px 20px 0 #00000025;
+  background-color: #000000bd;
+}
+
+.main-nav-link:last-child {
+  /* Biar bisa di kanan */
+  margin-left: auto;
+}
+
+/* MAIN PAGE */
+.container {
+  background-color: #f1f3f5;
+  height: 900px;
+}
+
+.canvas {
+  width: 800px;
+  height: auto;
+  display: flex;
+  margin: 50px auto;
+  padding: 50px auto;
+  justify-content: center;
+
+  background-color: white;
+
+  /* Shadow & Border radius */
+  box-shadow: 0 20px 50px 0 #00000025;
+  border-radius: 8px;
+}
+
+/* LEFT SIDE */
+.left-card {
+  padding: 40px 10px 40px 40px;
+}
+
+.intro-welcome {
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.intro-text {
+  text-align: justify;
+  margin-bottom: 24px;
+}
+
+/* CONTACT & DOWNLOAD */
+.contact-download {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+.download-button {
+  text-decoration: none;
+  color: black;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.download-button img {
+  width: 23px;
+}
+
+.contact-btn {
+  padding: 0.35rem 1.4rem;
+  background-color: #1f2937;
+  color: #ffffff;
+  border-radius: 9999px;
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+/* SOCIAL */
+.social-icons {
+  list-style: none;
+  display: flex;
+  gap: 12px;
+}
+
+.social-svgs {
+  width: 35px;
+}
+
+/* RIGHT SIDE */
+.profile-card {
+  margin: 40px 40px;
+  box-shadow: 0 20px 50px 0 #00000025;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.profile-card img {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.person-name {
+  font-size: 20px;
+}
+
+.person-job {
+  font-size: 12px;
+  margin-bottom: 10px;
+}

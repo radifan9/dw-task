@@ -2,7 +2,17 @@
 
 const projects = [];
 
+function deleteCard(index) {
+  console.log(`Delete card at index : ${index}`);
+  projects.splice(index, 1);
+  renderCards();
+}
+
 function getDateDifference(startDate, endDate) {
+  console.log(startDate);
+  console.log(endDate);
+
+  // Create instance using Date() constructor
   const start = new Date(startDate);
   const end = new Date(endDate);
 
@@ -32,6 +42,7 @@ function getData(e) {
   const projectName = document.getElementById("project-name").value;
   const startDate = Date.parse(document.getElementById("start-date").value);
   const endDate = Date.parse(document.getElementById("end-date").value);
+
   const nodejs = document.getElementById("nodejs").checked;
   const reactjs = document.getElementById("reactjs").checked;
   const nextjs = document.getElementById("nextjs").checked;
@@ -55,7 +66,9 @@ function getData(e) {
   }
 
   // Use FileReader to read image as data URL
+  // Create new instance called reader
   const reader = new FileReader();
+
   reader.onload = function (event) {
     const imgSrc = event.target.result;
 
@@ -70,23 +83,25 @@ function getData(e) {
       img: { src: imgSrc },
     });
 
-    // Clear all form fields
+    // Clear all form fields, biar setelah submit form kosong
     document.getElementById("project-name").value = "";
 
     // Render project cards
     renderCards();
 
-    // Check if the heading already exists
+    // Check if the heading already exists, biar ada heading "MY PROJECT"
     if (!document.getElementById("my-project-heading")) {
+      // Jika belum ada "my-project-heading" bikin element <h2> dengan text id class berikut
       const heading = document.createElement("h2");
       heading.textContent = "My Project";
       heading.id = "my-project-heading";
       heading.className =
         "mt-5 text-uppercase fw-bold text-center h-my-project"; // Bootstrap margin-top
 
+      // Dapatkan DOM cardContainer, lalu simpan di variabel cardContainer
       const cardContainer = document.getElementById("cardContainer");
 
-      // Insert the heading before the cardContainer
+      // Insert the "heading" before the "cardContainer"
       cardContainer.parentNode.insertBefore(heading, cardContainer);
     }
   };
@@ -97,14 +112,14 @@ function getData(e) {
 function renderCards() {
   cardContainer.innerHTML = projects
     .map(
-      (project) =>
+      (project, index) =>
         `
           <div class="col">
-            <div class="card shadow">
+            <div class="card shadow single-card">
               <div class="container mt-2">
                 <img
                   src="${project.img.src}"
-                  class="card-img-top fixed-img"
+                  class="card-img fixed-img"
                   alt="${project.projectName}"
                 />
               </div>
@@ -138,7 +153,7 @@ function renderCards() {
                 </div>
                   <div class="d-flex justify-content-between gap-2">
                     <button type="button" class="btn btn-dark py-0 w-100">edit</button>
-                    <button type="button" class="btn btn-dark py-0 w-100">delete</button>
+                    <button type="button" class="btn btn-dark py-0 w-100" onclick="deleteCard(${index})">delete</button>
                   </div>
               </div>  
             </div>

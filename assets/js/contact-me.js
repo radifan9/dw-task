@@ -12,7 +12,7 @@ function getData(e) {
 
   console.log(name, email, phoneNumber, subject, message);
 
-  // If there's empty form, jangan diterima
+  // If there's empty form, alert visitor
   if (!name || !email || !phoneNumber || !subject || !message) {
     alert(
       "Please complete all fields before submitting: \n\n" +
@@ -25,7 +25,7 @@ function getData(e) {
     return;
   }
 
-  // Kasih respond di alert
+  // Give a respond to alert
   alert(
     `Thank you ${name}!\n\n` +
       `We have received your message:\n` +

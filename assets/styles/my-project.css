@@ -1,0 +1,26 @@
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+.fixed-img {
+  height: 200px; /* or any fixed height */
+  object-fit: cover; /* maintains aspect ratio and crops excess */
+  width: 100%; /* ensures it spans full width of card */
+}
+
+.small-icon {
+  width: 30px;
+}
+
+.text-duration {
+  font-size: 10px;
+  color: #495057;
+}
+
+.text-description {
+  font-size: 12px;
+}
+
+.h-my-project {
+  margin-bottom: 28px;
+}

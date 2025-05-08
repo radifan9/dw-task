@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Me</title>
+    <link
+      href="assets/bootstrap-5.3.5-dist/css/bootstrap.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link href="./assets/styles/my-project.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-sm bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="#"
+            ><img src="./assets/icons/logo-dumbways.png" width="30px"
+          /></a>
+
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="index.html"
+                  >Home</a
+                >
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="#">My Project</a>
+              </li>
+            </ul>
+
+            <a class="btn btn-dark px-3 py-1" href="#" role="button"
+              >Contact Me</a
+            >
+          </div>
+        </div>
+      </nav>
+
+      <!-- MAIN PAGE -->
+      <div class="row d-flex justify-content-center bg-secondary-subtle">
+        <div class="col-6 my-5">
+          <h1 class="text-uppercase fw-bold text-center">Add My Project</h1>
+        </div>
+
+        <form>
+          <div class="form-group col-8 mx-auto mb-4">
+            <label class="h5" for="name">Project Name</label>
+            <input type="text" class="form-control shadow" id="project-name" />
+          </div>
+
+          <div class="form-group col-8 mx-auto mb-4">
+            <div class="row">
+              <div class="col">
+                <label class="h5" for="start-date">Start Date</label>
+                <input
+                  type="date"
+                  class="form-control shadow"
+                  id="start-date"
+                />
+              </div>
+              <div class="col">
+                <label class="h5" for="end-date">End Date</label>
+                <input type="date" class="form-control shadow" id="end-date" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-8 mx-auto mb-4">
+            <label class="h5" for="your-message">Description</label>
+            <textarea
+              class="form-control shadow"
+              id="description"
+              rows="5"
+              placeholder="Type your project description here..."
+            ></textarea>
+          </div>
+
+          <div class="form-group col-8 mx-auto mb-4">
+            <label class="h5" for="your-message">Technologies</label>
+            <div class="d-flex gap-4">
+              <div class="input-group mb-3">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  aria-label="Checkbox for following text input"
+                  id="nodejs"
+                />
+                <label class="form-check-label ms-2">Node JS</label>
+              </div>
+
+              <div class="input-group mb-3">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  aria-label="Checkbox for following text input"
+                  id="reactjs"
+                />
+                <label class="form-check-label ms-2">React JS</label>
+              </div>
+            </div>
+            <div class="d-flex gap-4">
+              <div class="input-group mb-3">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  aria-label="Checkbox for following text input"
+                  id="nextjs"
+                />
+                <label class="form-check-label ms-2">Next JS</label>
+              </div>
+
+              <div class="input-group mb-3">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  aria-label="Checkbox for following text input"
+                  id="typescript"
+                />
+                <label class="form-check-label ms-1">TypeScript</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-8 mx-auto mb-3">
+            <label for="project-image" class="form-label">Upload Image</label>
+            <input
+              class="form-control"
+              type="file"
+              accept="image/*"
+              id="project-image"
+            />
+          </div>
+
+          <div class="col-8 my-5 mx-auto d-flex justify-content-end">
+            <button
+              type="submit"
+              class="btn btn-dark rounded-pill text-lowercase fw-bold px-4"
+              onclick="getData(event)"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div id="cardContainer" class="row row-cols-1 row-cols-md-3 g-5">
+        <!-- Remove all static cards - they will be added dynamically -->
+      </div>
+    </div>
+
+    <script src="./assets/bootstrap-5.3.5-dist/js/bootstrap.bundle.js"></script>
+    <script src="./assets/js/my-project.js"></script>
+  </body>
+</html>

@@ -12,6 +12,10 @@ body {
   width: 30px;
 }
 
+.custom-card-title {
+  font-size: 0.9rem;
+}
+
 .text-duration {
   font-size: 10px;
   color: #495057;
@@ -19,6 +23,10 @@ body {
 
 .text-description {
   font-size: 12px;
+}
+
+.custom-btn {
+  font-size: 0.9rem;
 }
 
 .h-my-project {

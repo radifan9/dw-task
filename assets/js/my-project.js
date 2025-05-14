@@ -1,17 +1,26 @@
+/* 
+App that used for dumbways student, it was deployed and can downloaded on playstore. Happy download.
+*/
+
 "use strict";
 
-const projects = [];
+let projects = [];
 
 function deleteCard(index) {
   console.log(`Delete card at index : ${index}`);
-  projects.splice(index, 1);
+
+  // Hapus data array di index ke i, berupa 1 data
+  // projects.splice(index, 1);
+
+  // CARA BARU, pakai filter
+  // Hanya akan mem-pass element yang tidak sama dengan index
+  projects = projects.filter((project, i) => i !== index);
+
+  // Render lagi setelah di delete
   renderCards();
 }
 
 function getDateDifference(startDate, endDate) {
-  console.log(startDate);
-  console.log(endDate);
-
   // Create instance using Date() constructor
   const start = new Date(startDate);
   const end = new Date(endDate);
@@ -19,22 +28,37 @@ function getDateDifference(startDate, endDate) {
   // Get difference in years
   const yearDiff = end.getFullYear() - start.getFullYear();
 
+  const yearEnd = end.getFullYear();
+
   // Get difference in months
   const monthDiff = end.getMonth() - start.getMonth();
 
   // Get difference in days
   const dayDiff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
 
+  // Jike lebih dari setahun return tahun, jika lebih dari 1 bulan return bulan, jika tidak tampilkan hari
+  // if (yearDiff >= 1) {
+  //   return `${yearDiff} tahun`;
+  // } else if (monthDiff >= 1) {
+  //   return `${monthDiff} bulan`;
+  // } else {
+  //   return `${dayDiff} hari`;
+  // }
+
+  // Jike lebih dari setahun return tahun, jika lebih dari 1 bulan return bulan, jika tidak tampilkan hari
+  // Return 2 data (diff & yearEnd), dibungkus di 1 object
   if (yearDiff >= 1) {
-    return `${yearDiff} tahun`;
+    return { diff: `${yearDiff} tahun`, yearEnd };
   } else if (monthDiff >= 1) {
-    return `${monthDiff} bulan`;
+    return { diff: `${monthDiff} bulan`, yearEnd };
   } else {
-    return `${dayDiff} hari`;
+    return { diff: `${dayDiff} hari`, yearEnd };
   }
 }
 
 function getData(e) {
+  console.log("Tombol submit di klik");
+
   // Prevent reload
   e.preventDefault();
 
@@ -52,9 +76,9 @@ function getData(e) {
   const file = imageInput.files[0];
 
   // Get duration of the project
-  const labelDurasi = getDateDifference(startDate, endDate);
+  const { diff: labelDurasi, yearEnd } = getDateDifference(startDate, endDate);
 
-  // If there's empty form, alert visitor
+  // FORM-VALIDATION, If there's empty form, alert visitor
   if (!projectName || !description || !file) {
     alert(
       "Please complete all fields before submitting:\n\n" +
@@ -70,11 +94,13 @@ function getData(e) {
   const reader = new FileReader();
 
   reader.onload = function (event) {
+    // event.target.result --> isi konten file
     const imgSrc = event.target.result;
 
     projects.push({
       projectName,
       labelDurasi,
+      yearEnd,
       description,
       nodejs,
       reactjs,
@@ -84,7 +110,8 @@ function getData(e) {
     });
 
     // Clear all form fields, biar setelah submit form kosong
-    document.getElementById("project-name").value = "";
+    // document.getElementById("project-name").value = "";
+    // document.getElementById("description").value = "";
 
     // Render project cards
     renderCards();
@@ -109,6 +136,7 @@ function getData(e) {
   reader.readAsDataURL(file); // This triggers reader.onload when complete
 }
 
+// Tiap klik submit, render bagian bawah dari  awal, jadi bukan render kartu tertentu
 function renderCards() {
   cardContainer.innerHTML = projects
     .map(
@@ -123,13 +151,21 @@ function renderCards() {
                   alt="${project.projectName}"
                 />
               </div>
-              <div class="card-body my-2 pt-0">
-                <h5 class="card-title my-0 fs-6">${project.projectName}</h5>
-                <p class="card-text text-duration">durasi: ${
+              <div class="card-body my-2 pt-0 pb-0">
+                <h5 class="card-title my-0 fw-bold custom-card-title">${
+                  project.projectName
+                } - ${project.yearEnd}</h5>
+                <p class="card-text text-duration">durasi : ${
                   project.labelDurasi
                 }</p>
-                <p class="card-text text-description">${project.description}</p>
+                  <!-- Pakai overflow biar ukuran setiap card sama, meskipun ada text yang panjang -->
+                  <div class="overflow-y-hidden" style="height: 54px">
+                    <p class="card-text text-description">${
+                      project.description
+                    }</p>
+                  </div>
                 <div class="d-flex my-4">
+                <!-- ternary operator, kalau nodejs true, tampilkan img, kalau tidak output string kosong "" -->
                 ${
                   project.nodejs
                     ? `<img class="mx-2" width="20px" src="./assets/icons/node-js.svg" />`
@@ -152,8 +188,8 @@ function renderCards() {
                 }
                 </div>
                   <div class="d-flex justify-content-between gap-2">
-                    <button type="button" class="btn btn-dark py-0 w-100">edit</button>
-                    <button type="button" class="btn btn-dark py-0 w-100" onclick="deleteCard(${index})">delete</button>
+                    <button type="button" class="btn btn-dark py-0 w-100 fw-bold  custom-btn">edit</button>
+                    <button type="button" class="btn btn-dark py-0 w-100 fw-bold custom-btn" onclick="deleteCard(${index})">delete</button>
                   </div>
               </div>  
             </div>

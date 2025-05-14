@@ -71,6 +71,7 @@
           <div class="form-group col-8 mx-auto mb-4">
             <div class="row">
               <div class="col">
+                <!-- START DATE -->
                 <label class="h5" for="start-date">Start Date</label>
                 <input
                   type="date"
@@ -79,6 +80,7 @@
                 />
               </div>
               <div class="col">
+                <!-- END DATE -->
                 <label class="h5" for="end-date">End Date</label>
                 <input type="date" class="form-control shadow" id="end-date" />
               </div>
@@ -173,8 +175,10 @@
       </div>
 
       <!-- SUBMITTED PROJECT -->
+      <!-- row-colls-sm-3 artinya berusaha nampilin 3 kolom, sampai breakpoint sm -->
+      <!-- Jadi misal saya pakai class row-cols-sm-2 bakal nampilin 2 kolom card -->
       <div id="cardContainer" class="row row-cols-sm-3 g-4 mx-5 mb-5">
-        <!-- Remove all static cards - they will be added dynamically -->
+        <!-- Disini project card akan di tambah secara dinamis -->
       </div>
     </div>
 

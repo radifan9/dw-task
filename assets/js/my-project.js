@@ -75,10 +75,10 @@ function getData(e) {
   const imageInput = document.getElementById("project-image");
   const file = imageInput.files[0];
 
-  // Get duration of the project
+  // Dapatkan labelDurasi (berupa string) dan yearEnd (untuk di tambah di akhir judul projek)
   const { diff: labelDurasi, yearEnd } = getDateDifference(startDate, endDate);
 
-  // FORM-VALIDATION, If there's empty form, alert visitor
+  // FORM-VALIDATION, jika ada form yang kosong, alert pengunjung dan jangan lanjutkan getData
   if (!projectName || !description || !file) {
     alert(
       "Please complete all fields before submitting:\n\n" +
@@ -116,19 +116,18 @@ function getData(e) {
     // Render project cards
     renderCards();
 
-    // Check if the heading already exists, biar ada heading "MY PROJECT"
+    // Cek apakah sudah ada heading, agar terdapat heading "MY PROJECT"
     if (!document.getElementById("my-project-heading")) {
       // Jika belum ada "my-project-heading" bikin element <h2> dengan text id class berikut
       const heading = document.createElement("h2");
       heading.textContent = "My Project";
       heading.id = "my-project-heading";
       heading.className =
-        "mt-5 text-uppercase fw-bold text-center h-my-project"; // Bootstrap margin-top
+        "mt-5 text-uppercase fw-bold text-center h-my-project";
 
-      // Dapatkan DOM cardContainer, lalu simpan di variabel cardContainer
       const cardContainer = document.getElementById("cardContainer");
 
-      // Insert the "heading" before the "cardContainer"
+      // Masukkan "my-project-heading" sebelum "cardContainer"
       cardContainer.parentNode.insertBefore(heading, cardContainer);
     }
   };

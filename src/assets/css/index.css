@@ -5,10 +5,26 @@ FONT SIZE SYSTEM (px)
 10 / 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 44 / 52 / 62 / 74 / 86 / 98
 */
 
+body {
+  font-family: "Poppins";
+}
+
 .main-page {
   margin-top: 128px;
   margin-bottom: 128px;
   padding: 32px 32px;
+}
+
+.button-download:link,
+.button-download:visited {
+  color: black;
+  text-decoration: none;
+}
+
+.button-download:hover,
+.button-download:active {
+  color: black;
+  text-decoration: none;
 }
 
 .social-svgs {

@@ -1,4 +1,10 @@
 import express from "express";
+import hbs from "hbs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 let visitors = [];
 
@@ -11,6 +17,9 @@ app.set("views", "src/views");
 app.use("/assets", express.static("src/assets"));
 app.use("/bootstrap", express.static("node_modules/bootstrap/dist"));
 
+// Register partials
+hbs.registerPartials(path.join(__dirname, "src/views/partials"));
+
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 // app.use(express.json()));
@@ -18,7 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // index
 const renderIndex = (req, res) => {
-  res.render("index");
+  res.render("index", { title: "Home" });
 };
 
 // contact

@@ -2,6 +2,7 @@
   "css.enabledLanguages": ["html", "hbs"],
   "css.styleSheets": [
     "node_modules/bootstrap/dist/css/bootstrap.css",
+    "src/**/*.css",
     "src/**/*.scss"
   ],
   "files.associations": {

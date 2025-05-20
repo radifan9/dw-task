@@ -1,0 +1,13 @@
+{
+  "css.enabledLanguages": ["html", "hbs"],
+  "css.styleSheets": [
+    "node_modules/bootstrap/dist/css/bootstrap.css",
+    "src/**/*.scss"
+  ],
+  "files.associations": {
+    "*.hbs": "html"
+  },
+  "emmet.includeLanguages": {
+    "handlebars": "html"
+  }
+}

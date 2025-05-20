@@ -20,5 +20,5 @@ app.get("/contact", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Example app listening on http://127.0.0.1:${port}`);
 });

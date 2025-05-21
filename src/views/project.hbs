@@ -144,6 +144,10 @@
       <!-- SUBMITTED PROJECT -->
       <!-- row-colls-sm-3 artinya berusaha nampilin 3 kolom, sampai breakpoint sm -->
       <!-- Jadi misal saya pakai class row-cols-sm-2 bakal nampilin 2 kolom card -->
+      {{#if projectFilled}}
+      <h2 class="mt-5 text-uppercase fw-bold text-center h-my-project">My Project</h2>
+      {{/if}}
+
       <div id="cardContainer" class="row row-cols-sm-3 g-4 mx-5 mb-5">
         <!-- Disini project card akan di tambah secara dinamis -->
          {{#each projects}}

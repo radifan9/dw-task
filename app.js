@@ -13,7 +13,7 @@ const port = 3000;
 let visitors = [];
 let projects = [];
 
-// Add 1 projects for ez dev
+// Add 1 projects for ez development process
 projects.push({
   name: "DumbWays Web App",
   durationLabel: "7 month",
@@ -22,9 +22,12 @@ projects.push({
   endDate: "20 Nov 2025",
   description:
     "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iusto iste illo facilis itaque dolore saepe molestias tenetur, nihil repellat ipsum! Hic harum expedita illum doloremque quasi dolore vero incidunt amet ex, velit dolorum nobis porro iste quibusdam architecto rem repellat, perspiciatis repellendus non excepturi omnis? Delectus ex quos fugiat consequuntur? Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero nulla porro earum dolorem amet, expedita consequatur voluptatem aperiam atque mollitia sequi sed id laboriosam officia ullam. Quas obcaecati maxime temporibus eaque unde eius laboriosam aperiam perspiciatis, modi nisi pariatur ex nobis distinctio consectetur sunt ipsa corrupti nulla quidem. Ipsam, eum.",
-  techStack: { nodejs: false, reactjs: false, nextjs: true, typescript: true },
+  techStack: { nodejs: true, reactjs: true, nextjs: true, typescript: true },
   image: "https://picsum.photos/400/300",
 });
+
+let projectFilled = projects.length > 0;
+console.log(projectFilled);
 
 // Express setup
 app.set("view engine", "hbs");
@@ -61,13 +64,6 @@ function getDateLabel(startDate, endDate) {
   const monthDiff = end.getMonth() - start.getMonth();
   const dayDiff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
 
-  // Return 2 data (diff & yearEnd), wrap in 1 object
-  // if (yearDiff >= 1) {
-  //   return { diff: `${yearDiff} tahun`, yearEnd };
-  // } else if (monthDiff >= 1) {
-  //   return { diff: `${monthDiff} bulan`, yearEnd };
-  // } else {
-  //   return { diff: `${dayDiff} hari`, yearEnd };
   // }
   return {
     diff:
@@ -113,6 +109,7 @@ const handleSubmitContact = (req, res) => {
 const renderProject = (req, res) => {
   res.render("project", {
     projects,
+    projectFilled,
     path: "/project",
   });
 };
@@ -150,12 +147,27 @@ const renderProjectDetail = (req, res) => {
   const project = projects.find((_, index) => index === id);
 
   if (!project) {
-    return res.send("Project not found!");
+    return res.redirect("/project");
   }
 
-  // Changed to match the project list path
+  // Convert techStack object to array of technologies
+  const technologies = [
+    { name: "Node.js", icon: "node-js.svg", enabled: project.techStack.nodejs },
+    { name: "React", icon: "react-js.svg", enabled: project.techStack.reactjs },
+    {
+      name: "Next.js",
+      icon: "nextjs_icon_dark.svg",
+      enabled: project.techStack.nextjs,
+    },
+    {
+      name: "TypeScript",
+      icon: "typescript.svg",
+      enabled: project.techStack.typescript,
+    },
+  ].filter((tech) => tech.enabled);
+
   res.render("project-detail", {
-    project,
+    project: { ...project, technologies },
     path: "/project",
   });
 };

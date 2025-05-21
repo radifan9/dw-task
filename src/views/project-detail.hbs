@@ -42,22 +42,20 @@
             </div>
             <div>
               <h2 class="h5">Technologies</h2>
-              <div class="d-flex gap-2">
-                {{#if project.techStack.nodejs}}
-                  <img src="/assets/icons/node-js.svg" alt="Node.js" width="20" height="20">
-                {{/if}}
-                
-                {{#if project.techStack.reactjs}}
-                  <img src="/assets/icons/react-js.svg" alt="React" width="20" height="20">
-                {{/if}}
-                
-                {{#if project.techStack.nextjs}}
-                  <img src="/assets/icons/next-js.svg" alt="Next.js" width="20" height="20">
-                {{/if}}
-                
-                {{#if project.techStack.typescript}}
-                  <img src="/assets/icons/typescript.svg" alt="TypeScript" width="20" height="20">
-                {{/if}}
+              <div class="container text-center">
+                <div class="row row-cols-2 g-3">
+                  {{#each project.technologies}}
+                    <div class="col d-flex align-items-center justify-content-start gap-3">
+                      <img 
+                        src="/assets/icons/{{this.icon}}" 
+                        alt="{{this.name}}" 
+                        width="35" 
+                        height="35"
+                      >
+                      <span>{{this.name}}</span>
+                    </div>
+                  {{/each}}
+                </div>
               </div>
             </div>
           </div>

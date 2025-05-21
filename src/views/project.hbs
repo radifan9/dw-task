@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,7 +10,6 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
     />
-    <link href="./assets/styles/my-project.css" rel="stylesheet" />
     <title>My Project</title>
   </head>
  
@@ -24,10 +24,10 @@
           <h1 class="text-uppercase fw-bold text-center">Add My Project</h1>
         </div>
 
-        <form>
+        <form action="/project" method="post">
           <div class="form-group col-8 mx-auto mb-4">
             <label class="h5" for="name">Project Name</label>
-            <input type="text" class="form-control shadow" id="project-name" />
+            <input type="text" class="form-control shadow" id="project-name" name="name" />
           </div>
 
           <div class="form-group col-8 mx-auto mb-4">
@@ -38,13 +38,13 @@
                 <input
                   type="date"
                   class="form-control shadow"
-                  id="start-date"
+                  id="start-date" name="start"
                 />
               </div>
               <div class="col">
                 <!-- END DATE -->
                 <label class="h5" for="end-date">End Date</label>
-                <input type="date" class="form-control shadow" id="end-date" />
+                <input type="date" class="form-control shadow" id="end-date" name="end" />
               </div>
             </div>
           </div>
@@ -56,6 +56,7 @@
               id="description"
               rows="5"
               placeholder="Type your project description here..."
+              name="description"
             ></textarea>
           </div>
 
@@ -70,6 +71,7 @@
                   value=""
                   aria-label="checkbox for node js"
                   id="nodejs"
+                  name="nodejs"
                 />
                 <label class="form-check-label ms-2">Node JS</label>
               </div>
@@ -82,6 +84,7 @@
                   value=""
                   aria-label="checkbox for next js"
                   id="nextjs"
+                  name="nextjs"
                 />
                 <label class="form-check-label ms-2">Next JS</label>
               </div>
@@ -96,6 +99,7 @@
                   value=""
                   aria-label="checkbox for react js"
                   id="reactjs"
+                  name="reactjs"
                 />
                 <label class="form-check-label ms-2">React JS</label>
               </div>
@@ -108,6 +112,7 @@
                   value=""
                   aria-label="checkbox for typescript"
                   id="typescript"
+                  name="typescript"
                 />
                 <label class="form-check-label ms-2">TypeScript</label>
               </div>
@@ -128,7 +133,7 @@
             <button
               type="submit"
               class="btn btn-dark rounded-pill text-lowercase fw-bold px-4 py-1"
-              onclick="getData(event)"
+              
             >
               Submit
             </button>
@@ -141,6 +146,52 @@
       <!-- Jadi misal saya pakai class row-cols-sm-2 bakal nampilin 2 kolom card -->
       <div id="cardContainer" class="row row-cols-sm-3 g-4 mx-5 mb-5">
         <!-- Disini project card akan di tambah secara dinamis -->
+         {{#each projects}}
+          <div class="col">
+            <a href="/project/{{@index}}" class="text-decoration-none ">
+              <div class="card shadow single-card">
+                <div class="container mt-2">
+                  <img
+                    src="{{this.image}}"
+                    class="card-img fixed-img"
+                    alt="{{this.name}}"
+                  />
+                </div>
+                <div class="card-body my-2 pt-0 pb-0">
+                  <h5 class="card-title my-0 fw-bold custom-card-title">{{this.name}} - {{this.yearEnd}}</h5>
+                  <p class="card-text text-duration">durasi : {{this.durationLabel}}</p>
+                    <!-- Pakai overflow biar ukuran setiap card sama, meskipun ada text yang panjang -->
+                    <div class="overflow-y-hidden" style="height: 54px">
+                      <p class="card-text text-description">{{
+                        this.description
+                      }}</p>
+                    </div>
+                  <div class="d-flex my-4">
+                  {{#if this.techStack.nodejs}}
+                    <img class="mx-2" width="20px" src="/assets/icons/node-js.svg" />
+                  {{/if}}
+                  
+                  {{#if this.techStack.reactjs}}
+                    <img class="mx-2" width="20px" src="/assets/icons/react-js.svg" />
+                  {{/if}}
+                  
+                  {{#if this.techStack.nextjs}}
+                    <img class="mx-2" width="20px" src="/assets/icons/next-js.svg" />
+                  {{/if}}
+                  
+                  {{#if this.techStack.typescript}}
+                    <img class="mx-2" width="20px" src="/assets/icons/typescript.svg" />
+                  {{/if}}
+                  </div>
+                    <div class="d-flex justify-content-between gap-2">
+                      <button type="button" class="btn btn-dark py-0 w-100 fw-bold  custom-btn">edit</button>
+                      <button type="button" class="btn btn-dark py-0 w-100 fw-bold custom-btn" onclick="deleteCard(${index})">delete</button>
+                    </div>
+                </div>  
+              </div>
+            </a>
+          </div>  
+        {{/each}}
       </div>
     </div>
 

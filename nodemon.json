@@ -1,0 +1,6 @@
+{
+  "watch": ["src/views/", "src/views/partials/", "app.js"],
+  "ext": "js,hbs",
+  "ignore": ["node_modules/"],
+  "exec": "node app.js"
+}

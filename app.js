@@ -22,7 +22,7 @@ const TECHNOLOGIES = [
   { name: "Bootstrap", icon: "bootstrap.svg", key: "bootstrap" },
 ];
 
-// Add 1 project for ez development process
+// Add 2 project for ez development process
 projects.push({
   name: "DumbWays Web App",
   durationLabel: "7 month",
@@ -33,6 +33,18 @@ projects.push({
     "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iusto iste illo facilis itaque dolore saepe molestias tenetur, nihil repellat ipsum! Hic harum expedita illum doloremque quasi dolore vero incidunt amet ex, velit dolorum nobis porro iste quibusdam architecto rem repellat, perspiciatis repellendus non excepturi omnis? Delectus ex quos fugiat consequuntur? Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero nulla porro earum dolorem amet, expedita consequatur voluptatem aperiam atque mollitia sequi sed id laboriosam officia ullam. Quas obcaecati maxime temporibus eaque unde eius laboriosam aperiam perspiciatis, modi nisi pariatur ex nobis distinctio consectetur sunt ipsa corrupti nulla quidem. Ipsam, eum.",
   techStack: { nodejs: true, reactjs: true, nextjs: true, typescript: true },
   image: "https://picsum.photos/400/300",
+});
+
+projects.push({
+  name: "AirBNB",
+  durationLabel: "1 year",
+  yearEnd: 2026,
+  startDate: "29 Apr 2025",
+  endDate: "29 Apr 2026",
+  description:
+    "Airbnb adalah sebuah platform online yang memungkinkan orang untuk menyewakan atau memesan tempat menginap—mulai dari kamar di rumah pribadi, apartemen, vila, hingga penginapan unik seperti rumah pohon atau kapal.",
+  techStack: { nodejs: true, reactjs: true, typescript: true, tailwind: true },
+  image: "/assets/images/airbnb.png",
 });
 
 projectFilled = projects.length > 0;
@@ -56,7 +68,7 @@ hbs.registerHelper("lookup", function (obj, key) {
   return obj[key];
 });
 
-// Utility function
+// Utility Function
 function getDateLabel(startDate, endDate) {
   const start = new Date(startDate);
   const end = new Date(endDate);
@@ -138,8 +150,6 @@ const renderProject = (req, res) => {
 
 const handleSubmitProject = (req, res) => {
   const { name, start, end, description } = req.body;
-
-  // Get date labels
   const { diff, yearEnd, startDate, endDate } = getDateLabel(start, end);
 
   // Build techStack dynamically from TECHNOLOGIES
@@ -159,7 +169,7 @@ const handleSubmitProject = (req, res) => {
     endDate,
     description,
     techStack,
-    image: "https://picsum.photos/300/300",
+    image: "https://picsum.photos/400/300",
   };
 
   projects.push(project);
@@ -171,11 +181,14 @@ const renderProjectDetail = (req, res) => {
   const id = parseInt(req.params.id);
   const project = projects.find((_, index) => index === id);
 
+  // Redirect if project not found
   if (!project) {
     return res.redirect("/project");
   }
 
+  // Use this object to store tech name, icon name
   const technologies = TECHNOLOGIES.filter(
+    // Pass(lolos filter) if project with key correspond to value 'true'
     (tech) => project.techStack[tech.key]
   );
 

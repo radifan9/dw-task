@@ -60,62 +60,25 @@
             ></textarea>
           </div>
 
-          <div class="form-group col-8 mx-auto mb-4">
+          <div class="container form-group col-8 mx-auto mb-4">
             <label class="h5" for="your-message">Technologies</label>
-            <div class="d-flex gap-4">
-              <!-- Node JS -->
-              <div class="input-group mb-3">
+            <div class="row row-cols-2">
+              {{#each technologies}}
+              <div class="col">
+                <div class="input-group mb-3">
                 <input
                   class="form-check-input"
                   type="checkbox"
                   value=""
-                  aria-label="checkbox for node js"
-                  id="nodejs"
-                  name="nodejs"
+                  aria-label="checkbox for {{this.name}}"
+                  id="{{this.key}}"
+                  name="{{this.key}}"
                 />
-                <label class="form-check-label ms-2">Node JS</label>
+                <label class="form-check-label ms-2">{{this.name}}</label>
               </div>
-
-              <!-- Next JS -->
-              <div class="input-group mb-3">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  aria-label="checkbox for next js"
-                  id="nextjs"
-                  name="nextjs"
-                />
-                <label class="form-check-label ms-2">Next JS</label>
               </div>
-            </div>
-
-            <div class="d-flex gap-4">
-              <!-- React JS -->
-              <div class="input-group mb-3">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  aria-label="checkbox for react js"
-                  id="reactjs"
-                  name="reactjs"
-                />
-                <label class="form-check-label ms-2">React JS</label>
-              </div>
-
-              <!-- TypeScript -->
-              <div class="input-group mb-3">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  aria-label="checkbox for typescript"
-                  id="typescript"
-                  name="typescript"
-                />
-                <label class="form-check-label ms-2">TypeScript</label>
-              </div>
+              
+              {{/each}}
             </div>
           </div>
 
@@ -141,9 +104,7 @@
         </form>
       </div>
 
-      <!-- SUBMITTED PROJECT -->
-      <!-- row-colls-sm-3 artinya berusaha nampilin 3 kolom, sampai breakpoint sm -->
-      <!-- Jadi misal saya pakai class row-cols-sm-2 bakal nampilin 2 kolom card -->
+      <!-- SUBMITTED PROJECT, using grid 3 columns -->
       {{#if projectFilled}}
       <h2 class="mt-5 text-uppercase fw-bold text-center h-my-project">My Project</h2>
       {{/if}}
@@ -171,21 +132,16 @@
                       }}</p>
                     </div>
                   <div class="d-flex my-4">
-                  {{#if this.techStack.nodejs}}
-                    <img class="mx-2" width="20px" src="/assets/icons/node-js.svg" />
-                  {{/if}}
-                  
-                  {{#if this.techStack.reactjs}}
-                    <img class="mx-2" width="20px" src="/assets/icons/react-js.svg" />
-                  {{/if}}
-                  
-                  {{#if this.techStack.nextjs}}
-                    <img class="mx-2" width="20px" src="/assets/icons/next-js.svg" />
-                  {{/if}}
-                  
-                  {{#if this.techStack.typescript}}
-                    <img class="mx-2" width="20px" src="/assets/icons/typescript.svg" />
-                  {{/if}}
+                  {{#each technologies}}
+                    {{#if (lookup ../this.techStack this.key)}}
+                      <img 
+                        class="mx-2" 
+                        width="20px" 
+                        src="/assets/icons/{{this.icon}}" 
+                        alt="{{this.name}}"
+                      />
+                    {{/if}}
+                  {{/each}}
                   </div>
                     <div class="d-flex justify-content-between gap-2">
                       <button type="button" class="btn btn-dark py-0 w-100 fw-bold  custom-btn">edit</button>

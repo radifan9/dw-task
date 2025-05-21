@@ -9,11 +9,20 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = 3000;
 
-// Data
+// Data & Constants
 let visitors = [];
 let projects = [];
+let projectFilled;
+const TECHNOLOGIES = [
+  { name: "Node.js", icon: "node-js.svg", key: "nodejs" },
+  { name: "React", icon: "react-js.svg", key: "reactjs" },
+  { name: "Next.js", icon: "nextjs_icon_dark.svg", key: "nextjs" },
+  { name: "TypeScript", icon: "typescript.svg", key: "typescript" },
+  { name: "Tailwind", icon: "tailwindcss.svg", key: "tailwind" },
+  { name: "Bootstrap", icon: "bootstrap.svg", key: "bootstrap" },
+];
 
-// Add 1 projects for ez development process
+// Add 1 project for ez development process
 projects.push({
   name: "DumbWays Web App",
   durationLabel: "7 month",
@@ -26,20 +35,25 @@ projects.push({
   image: "https://picsum.photos/400/300",
 });
 
-let projectFilled = projects.length > 0;
+projectFilled = projects.length > 0;
 console.log(projectFilled);
 
 // Express setup
 app.set("view engine", "hbs");
 app.set("views", "src/views");
 
-// Static files & middleware
+// Static files, middleware, helper
 app.use("/assets", express.static("src/assets"));
 app.use("/bootstrap", express.static("node_modules/bootstrap/dist"));
 app.use(express.urlencoded({ extended: false }));
 hbs.registerPartials(path.join(__dirname, "src/views/partials"));
+// Equality comparison, return true if equal
 hbs.registerHelper("eq", function (a, b) {
   return a === b;
+});
+// Lookup, return value at specified key from an object
+hbs.registerHelper("lookup", function (obj, key) {
+  return obj[key];
 });
 
 // Utility function
@@ -64,7 +78,6 @@ function getDateLabel(startDate, endDate) {
   const monthDiff = end.getMonth() - start.getMonth();
   const dayDiff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
 
-  // }
   return {
     diff:
       yearDiff >= 1
@@ -107,18 +120,36 @@ const handleSubmitContact = (req, res) => {
 
 // project
 const renderProject = (req, res) => {
+  // Map projects to include technologies array
+  const projectsWithTech = projects.map((project) => {
+    const technologies = TECHNOLOGIES.filter(
+      (tech) => project.techStack[tech.key]
+    );
+    return { ...project, technologies };
+  });
+
   res.render("project", {
-    projects,
+    projects: projectsWithTech,
+    technologies: TECHNOLOGIES,
     projectFilled,
     path: "/project",
   });
 };
 
 const handleSubmitProject = (req, res) => {
-  const { name, start, end, description, nodejs, reactjs, nextjs, typescript } =
-    req.body;
+  const { name, start, end, description } = req.body;
 
+  // Get date labels
   const { diff, yearEnd, startDate, endDate } = getDateLabel(start, end);
+
+  // Build techStack dynamically from TECHNOLOGIES
+  const techStack = TECHNOLOGIES.reduce(
+    (stack, tech) => ({
+      ...stack,
+      [tech.key]: req.body[tech.key] === "",
+    }),
+    {}
+  );
 
   const project = {
     name,
@@ -127,17 +158,11 @@ const handleSubmitProject = (req, res) => {
     startDate,
     endDate,
     description,
-    techStack: {
-      nodejs: nodejs === "" ? true : false,
-      reactjs: reactjs === "" ? true : false,
-      nextjs: nextjs === "" ? true : false,
-      typescript: typescript === "" ? true : false,
-    },
+    techStack,
     image: "https://picsum.photos/300/300",
   };
 
   projects.push(project);
-  console.log(projects);
   res.redirect("/project");
 };
 
@@ -150,21 +175,9 @@ const renderProjectDetail = (req, res) => {
     return res.redirect("/project");
   }
 
-  // Convert techStack object to array of technologies
-  const technologies = [
-    { name: "Node.js", icon: "node-js.svg", enabled: project.techStack.nodejs },
-    { name: "React", icon: "react-js.svg", enabled: project.techStack.reactjs },
-    {
-      name: "Next.js",
-      icon: "nextjs_icon_dark.svg",
-      enabled: project.techStack.nextjs,
-    },
-    {
-      name: "TypeScript",
-      icon: "typescript.svg",
-      enabled: project.techStack.typescript,
-    },
-  ].filter((tech) => tech.enabled);
+  const technologies = TECHNOLOGIES.filter(
+    (tech) => project.techStack[tech.key]
+  );
 
   res.render("project-detail", {
     project: { ...project, technologies },

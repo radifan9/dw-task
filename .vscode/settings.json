@@ -10,5 +10,10 @@
   },
   "emmet.includeLanguages": {
     "handlebars": "html"
+  },
+
+  "[handlebars]": {
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": null
   }
 }

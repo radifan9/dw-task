@@ -30,9 +30,9 @@ projects.push({
   startDate: "29 Apr 2025",
   endDate: "20 Nov 2025",
   description:
-    "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iusto iste illo facilis itaque dolore saepe molestias tenetur, nihil repellat ipsum! Hic harum expedita illum doloremque quasi dolore vero incidunt amet ex, velit dolorum nobis porro iste quibusdam architecto rem repellat, perspiciatis repellendus non excepturi omnis? Delectus ex quos fugiat consequuntur? Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero nulla porro earum dolorem amet, expedita consequatur voluptatem aperiam atque mollitia sequi sed id laboriosam officia ullam. Quas obcaecati maxime temporibus eaque unde eius laboriosam aperiam perspiciatis, modi nisi pariatur ex nobis distinctio consectetur sunt ipsa corrupti nulla quidem. Ipsam, eum.",
+    "App that used for dumbways student, it was deployed and can downloaded on playstore. Happy download.",
   techStack: { nodejs: true, reactjs: true, nextjs: true, typescript: true },
-  image: "https://picsum.photos/400/300",
+  image: "/assets/images/gameboy.webp",
 });
 
 projects.push({
@@ -48,7 +48,6 @@ projects.push({
 });
 
 projectFilled = projects.length > 0;
-console.log(projectFilled);
 
 // Express setup
 app.set("view engine", "hbs");
@@ -73,6 +72,7 @@ function getDateLabel(startDate, endDate) {
   const start = new Date(startDate);
   const end = new Date(endDate);
 
+  // Target output: 29 Apr 2025
   const dateFormatter = new Intl.DateTimeFormat("en-GB", {
     day: "numeric",
     month: "short",
@@ -103,7 +103,7 @@ function getDateLabel(startDate, endDate) {
   };
 }
 
-// --- Route Handlers
+// --- Route Handlers ---
 // index
 const renderIndex = (req, res) => {
   res.render("index", { path: "/" });
@@ -176,7 +176,7 @@ const handleSubmitProject = (req, res) => {
   res.redirect("/project");
 };
 
-// project detail
+// project-detail
 const renderProjectDetail = (req, res) => {
   const id = parseInt(req.params.id);
   const project = projects.find((_, index) => index === id);

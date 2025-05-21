@@ -3,43 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <link rel="stylesheet" href="/bootstrap/css/bootstrap.css" />
-    <link href="./assets/css/project.css" rel="stylesheet" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
+    <link href="/assets/css/project.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
     <title>My Project</title>
   </head>
- 
   <body>
     <div class="container-fluid">
       <!-- NAV BAR -->
       {{> navbar}}
-
       <!-- FORM PAGE -->
       <div class="row d-flex justify-content-center bg-secondary-subtle">
         <div class="col-6 my-5">
           <h1 class="text-uppercase fw-bold text-center">Add My Project</h1>
         </div>
-
         <form action="/project" method="post">
           <div class="form-group col-8 mx-auto mb-4">
             <label class="h5" for="name">Project Name</label>
             <input type="text" class="form-control shadow" id="project-name" name="name" />
           </div>
-
           <div class="form-group col-8 mx-auto mb-4">
             <div class="row">
               <div class="col">
                 <!-- START DATE -->
                 <label class="h5" for="start-date">Start Date</label>
-                <input
-                  type="date"
-                  class="form-control shadow"
-                  id="start-date" name="start"
-                />
+                <input type="date" class="form-control shadow" id="start-date" name="start" />
               </div>
               <div class="col">
                 <!-- END DATE -->
@@ -48,112 +36,71 @@
               </div>
             </div>
           </div>
-
           <div class="form-group col-8 mx-auto mb-4">
             <label class="h5" for="your-message">Description</label>
-            <textarea
-              class="form-control shadow"
-              id="description"
-              rows="5"
-              placeholder="Type your project description here..."
-              name="description"
-            ></textarea>
+            <textarea class="form-control shadow" id="description" rows="5" placeholder="Type your project description here..." name="description"></textarea>
           </div>
-
           <div class="container form-group col-8 mx-auto mb-4">
             <label class="h5" for="your-message">Technologies</label>
             <div class="row row-cols-2">
               {{#each technologies}}
-              <div class="col">
-                <div class="input-group mb-3">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  aria-label="checkbox for {{this.name}}"
-                  id="{{this.key}}"
-                  name="{{this.key}}"
-                />
-                <label class="form-check-label ms-2">{{this.name}}</label>
-              </div>
-              </div>
-              
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <input class="form-check-input" type="checkbox" value="" aria-label="checkbox for {{this.name}}" id="{{this.key}}" name="{{this.key}}" />
+                    <label class="form-check-label ms-2">{{this.name}}</label>
+                  </div>
+                </div>
               {{/each}}
             </div>
           </div>
-
           <div class="col-8 mx-auto mb-3">
             <label for="project-image" class="form-label">Upload Image</label>
-            <input
-              class="form-control"
-              type="file"
-              accept="image/*"
-              id="project-image"
-            />
+            <input class="form-control" type="file" accept="image/*" id="project-image" />
           </div>
-
           <div class="col-8 my-5 mx-auto d-flex justify-content-end">
-            <button
-              type="submit"
-              class="btn btn-dark rounded-pill text-lowercase fw-bold px-4 py-1"
-              
-            >
-              Submit
-            </button>
+            <button type="submit" class="btn btn-dark rounded-pill text-lowercase fw-bold px-4 py-1"> Submit </button>
           </div>
         </form>
       </div>
-
       <!-- SUBMITTED PROJECT, using grid 3 columns -->
       {{#if projectFilled}}
-      <h2 class="mt-5 text-uppercase fw-bold text-center h-my-project">My Project</h2>
+        <h2 class="mt-5 text-uppercase fw-bold text-center h-my-project">My Project</h2>
       {{/if}}
-
       <div id="cardContainer" class="row row-cols-sm-3 g-4 mx-5 mb-5">
-        <!-- Disini project card akan di tambah secara dinamis -->
-         {{#each projects}}
+        <!-- Added project dynamically -->
+        {{#each projects}}
           <div class="col">
             <a href="/project/{{@index}}" class="text-decoration-none ">
               <div class="card shadow single-card">
                 <div class="container mt-2">
-                  <img
-                    src="{{this.image}}"
-                    class="card-img fixed-img"
-                    alt="{{this.name}}"
-                  />
+                  <img src="{{this.image}}" class="card-img fixed-img" alt="{{this.name}}" />
                 </div>
                 <div class="card-body my-2 pt-0 pb-0">
                   <h5 class="card-title my-0 fw-bold custom-card-title">{{this.name}} - {{this.yearEnd}}</h5>
                   <p class="card-text text-duration">durasi : {{this.durationLabel}}</p>
-                    <!-- Pakai overflow biar ukuran setiap card sama, meskipun ada text yang panjang -->
-                    <div class="overflow-y-hidden" style="height: 54px">
-                      <p class="card-text text-description">{{
-                        this.description
+                  <!-- Pakai overflow biar ukuran setiap card sama, meskipun ada text yang panjang -->
+                  <div class="overflow-y-hidden" style="height: 54px">
+                    <p class="card-text text-description">{{ this.description
                       }}</p>
-                    </div>
-                  <div class="d-flex my-4">
-                  {{#each technologies}}
-                    {{#if (lookup ../this.techStack this.key)}}
-                      <img 
-                        class="mx-2" 
-                        width="20px" 
-                        src="/assets/icons/{{this.icon}}" 
-                        alt="{{this.name}}"
-                      />
-                    {{/if}}
-                  {{/each}}
                   </div>
-                    <div class="d-flex justify-content-between gap-2">
-                      <button type="button" class="btn btn-dark py-0 w-100 fw-bold  custom-btn">edit</button>
-                      <button type="button" class="btn btn-dark py-0 w-100 fw-bold custom-btn" ">delete</button>
-                    </div>
-                </div>  
-              </div>
-            </a>
-          </div>  
+                  <div class="d-flex my-4">
+                    {{#each technologies}}
+                      {{#if (lookup ../this.techStack this.key)}}
+                        <img class="mx-2" width="20px" src="/assets/icons/{{this.icon}}" alt="{{this.name}}" />
+                      {{/if}}
+                    {{/each}}
+                  </div>
+                  <div class="d-flex justify-content-between gap-2">
+                    <button type="button" class="btn btn-dark py-0 w-100 fw-bold  custom-btn">edit</button>
+                    <button type="button" class="btn btn-dark py-0 w-100 fw-bold custom-btn" ">delete</button>
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>  
         {{/each}}
-      </div>
-    </div>
-
-  </body>
+      
+			</div>
+		</div>
+	</body>
 </html>

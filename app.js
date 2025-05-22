@@ -3,6 +3,7 @@ import morgan from "morgan";
 import hbs from "hbs";
 import path from "path";
 import { fileURLToPath } from "url";
+// import { title } from "process";
 
 // Configuration
 const __filename = fileURLToPath(import.meta.url);
@@ -48,6 +49,7 @@ projects.push({
   image: "/assets/images/airbnb.png",
 });
 
+// Boolean indicator, true = if there is a project
 projectFilled = projects.length > 0;
 
 // Express setup
@@ -108,16 +110,24 @@ function getDateLabel(startDate, endDate) {
 // --- Route Handlers ---
 // index
 const renderIndex = (req, res) => {
-  res.render("index", { path: "/" });
+  res.render("index", {
+    path: "/",
+    title: "Personal Website",
+    cssFile: "index",
+  });
 };
 
 // contact
 const renderContact = (req, res) => {
-  res.render("contact", { path: "/contact" });
+  res.render("contact", {
+    path: "/contact",
+    title: "Contact Me",
+    cssFile: "contact",
+  });
 };
 
 const handleSubmitContact = (req, res) => {
-  const { name, email, phoneNumber, subject, yourMessage: message } = req.body;
+  const { name, email, phoneNumber, subject, message } = req.body;
 
   const visitor = {
     name,
@@ -128,7 +138,8 @@ const handleSubmitContact = (req, res) => {
   };
 
   visitors.push(visitor);
-  console.log("Berhasil submit");
+  console.log("--- Berhasil Submit");
+  console.log(visitors);
   res.redirect("/contact");
 };
 
@@ -147,6 +158,8 @@ const renderProject = (req, res) => {
     technologies: TECHNOLOGIES,
     projectFilled,
     path: "/project",
+    title: "My Project",
+    cssFile: "project",
   });
 };
 
@@ -175,6 +188,7 @@ const handleSubmitProject = (req, res) => {
   };
 
   projects.push(project);
+  projectFilled = projects.length > 0;
   res.redirect("/project");
 };
 
@@ -197,6 +211,8 @@ const renderProjectDetail = (req, res) => {
   res.render("project-detail", {
     project: { ...project, technologies },
     path: "/project",
+    title: `${project.name} | Project Detail`,
+    cssFile: "project-detail",
   });
 };
 
@@ -208,5 +224,5 @@ app.route("/project/:id").get(renderProjectDetail);
 
 // Server
 app.listen(port, () => {
-  console.log(`App listening on http://127.0.0.1:${port}`);
+  console.log(`Server running on http://127.0.0.1:${port}`);
 });

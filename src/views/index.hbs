@@ -1,38 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Personal Website</title>
-
-    <link rel="stylesheet" href="./assets/css/index.css" />
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-
-    <!-- Poppins Font -->
-     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+	<head>
+    <!-- HTML HEAD -->
+    {{> head }}
   </head>
-
-  <body>
-    <div class="container-fluid bg-body-secondary px-0 pb-5">
-      <!-- NAV BAR -->
+	<body>
+		<div class="container-fluid bg-body-secondary px-0 pb-5">
+			<!-- NAV BAR -->
       {{> navbar}}
 
-      <!-- MAIN PAGE -->
-      <div class="container main-page rounded-3 bg-body shadow d-flex align-items-center gap-5">
-        <div class="container mt-4 w-75">
-          <!-- LEFT SIDE -->
-          <section class="intro-profile">
-            <p class="h4 mb-3 fw-bold">Hi Welcome to my hut</p>
-            <p class="mb-4">
+			<!-- MAIN PAGE -->
+			<div class="container main-page rounded-3 bg-body shadow d-flex align-items-center gap-5">
+				<div class="container mt-4 w-75">
+					<!-- LEFT SIDE -->
+					<section class="intro-profile">
+						<p class="h4 mb-3 fw-bold">Hi Welcome to my hut</p>
+						<p class="mb-4">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
               error possimus iste sit! Ut deleniti corrupti error doloremque
               mollitia earum aliquid quisquam dolores facilis, porro suscipit?
@@ -42,80 +25,76 @@
               suscipit mollitia consequatur velit et nemo odit perferendis
               veritatis ut corrupti ipsum.
             </p>
-          </section>
-
-          <div>
-            <div class="d-flex gap-4 mb-5 contact-download">
-              <a
+					</section>
+					<div>
+						<div class="d-flex gap-4 mb-5 contact-download">
+							<a
                 class="btn btn-dark px-4 py-1 rounded-pill text-white"
                 href="/contact"
               >contact</a>
-              <a href="#" class="button-download">
-                <span>download CV</span>
-                <img
+							<a href="#" class="button-download">
+								<span>download CV</span>
+								<img
                   class="ms-2"
                   src="assets/icons/download.svg"
                   alt="download icon"
                 />
-              </a>
-            </div>
-
-            <ul class="d-flex list-inline social-icons gap-3">
-              <li>
-                <a class="icon-link" href="#">
-                  <img
+							</a>
+						</div>
+						<ul class="d-flex list-inline social-icons gap-3">
+							<li>
+								<a class="icon-link" href="#">
+									<img
                     class="social-svgs"
                     src="assets/icons/linkedin.svg"
                     alt="linkedin icon"
                   />
-                </a>
-              </li>
-              <li>
-                <a class="icon-link" href="#">
-                  <img
+								</a>
+							</li>
+							<li>
+								<a class="icon-link" href="#">
+									<img
                     class="social-svgs"
                     src="assets/icons/instagram.svg"
                     alt="instagram icon"
                   />
-                </a>
-              </li>
-              <li>
-                <a class="icon-link" href="#">
-                  <img
+								</a>
+							</li>
+							<li>
+								<a class="icon-link" href="#">
+									<img
                     class="social-svgs"
                     src="assets/icons/facebook.svg"
                     alt="facebook icon"
                   />
-                </a>
-              </li>
-              <li>
-                <a class="icon-link" href="#">
-                  <img
+								</a>
+							</li>
+							<li>
+								<a class="icon-link" href="#">
+									<img
                     class="social-svgs"
                     src="assets/icons/twitter.svg"
                     alt="twitter icon"
                   />
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="card shadow me-3">
-          <!-- RIGHT SIDE -->
-          <img
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="card shadow me-3">
+					<!-- RIGHT SIDE -->
+					<img
             class="card-img-top"
             src="assets/images/profile-picture.jpg"
             alt="Foto Wajah Rhoma Irama"
           />
-          <div class="card-body d-flex flex-column align-items-center">
-            <h5 class="card-title fw-bold mb-0" aria-label="Profile name">Rhoma Irama</h5>
-            <p class="card-text small mb-0">Fullstack Developer</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <script src="/bootstrap/js/bootstrap.bundle.js"></script>
-  </body>
+					<div class="card-body d-flex flex-column align-items-center">
+						<h5 class="card-title fw-bold mb-0" aria-label="Profile name">Rhoma Irama</h5>
+						<p class="card-text small mb-0">Fullstack Developer</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="/bootstrap/js/bootstrap.bundle.js"></script>
+	</body>
 </html>

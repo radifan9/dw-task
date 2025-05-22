@@ -1,4 +1,5 @@
 import express from "express";
+import morgan from "morgan";
 import hbs from "hbs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -54,6 +55,7 @@ app.set("view engine", "hbs");
 app.set("views", "src/views");
 
 // Static files, middleware, helper
+app.use(morgan("dev"));
 app.use("/assets", express.static("src/assets"));
 app.use("/bootstrap", express.static("node_modules/bootstrap/dist"));
 app.use(express.urlencoded({ extended: false }));

@@ -6,7 +6,7 @@
     "src/**/*.scss"
   ],
   "files.associations": {
-    "*.hbs": "html"
+    "*.hbs": "html" // Keep this as "html" for CSS IntelliSense
   },
   "emmet.includeLanguages": {
     "handlebars": "html"
@@ -15,5 +15,8 @@
   "[handlebars]": {
     "editor.formatOnSave": false,
     "editor.defaultFormatter": null
-  }
+  },
+  // Add these to explicitly disable Prettier for .hbs
+  "prettier.disableLanguages": ["handlebars"],
+  "prettier.ignoreFiles": ["**/*.hbs"]
 }

@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
 const port = 3000;
-const client = new Pool({
+const db = new Pool({
   user: "postgres",
   password: "ms11drag00nsql",
   host: "localhost",
@@ -135,21 +135,21 @@ const renderContact = (req, res) => {
   });
 };
 
-const handleSubmitContact = (req, res) => {
-  const { name, email, phoneNumber, subject, message } = req.body;
+const handleSubmitContact = async (req, res) => {
+  try {
+    const { name, email, phoneNumber, subject, message } = req.body;
+    const query = {
+      text: "INSERT INTO contact (name, email, phone_number, subject, message) VALUES ($1, $2, $3, $4, $5)",
+      values: [name, email, phoneNumber, subject, message],
+    };
 
-  const visitor = {
-    name,
-    email,
-    phoneNumber,
-    subject,
-    message,
-  };
-
-  visitors.push(visitor);
-  console.log("--- Berhasil Submit");
-  console.log(visitors);
-  res.redirect("/contact");
+    await db.query(query);
+    console.log("Contact form submitted successfully");
+    res.redirect("/contact");
+  } catch (error) {
+    console.error("Error submitting contact form:", error);
+    res.status(500).send("Error submitting form");
+  }
 };
 
 // project
@@ -198,6 +198,7 @@ const handleSubmitProject = (req, res) => {
 
   projects.push(project);
   projectFilled = projects.length > 0;
+  console.log(projects);
   res.redirect("/project");
 };
 

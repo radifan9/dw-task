@@ -1,4 +1,5 @@
 import express from "express";
+import { Pool } from "pg";
 import morgan from "morgan";
 import hbs from "hbs";
 import path from "path";
@@ -10,12 +11,20 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
 const port = 3000;
+const client = new Pool({
+  user: "postgres",
+  password: "ms11drag00nsql",
+  host: "localhost",
+  port: 5432,
+  database: "b61-personal-web",
+});
 
 // Data & Constants
 let visitors = [];
 let projects = [];
 let projectFilled;
-const TECHNOLOGIES = [  // Add tech dynamically
+const TECHNOLOGIES = [
+  // Add tech dynamically
   { name: "Node.js", icon: "node-js.svg", key: "nodejs" },
   { name: "React", icon: "react-js.svg", key: "reactjs" },
   { name: "Next.js", icon: "nextjs_icon_dark.svg", key: "nextjs" },

@@ -156,20 +156,38 @@ const handleSubmitContact = async (req, res) => {
 const renderProject = async (req, res) => {
   try {
     const projectsDB = await db.query("SELECT * FROM projects");
-    console.log(projectsDB.rows);
 
-    // Map projects to include technologies array
+    // Transform snake_case to camelCase and parse tech_stack
     const projectsWithTech = projectsDB.rows.map((project) => {
-      const technologies = TECHNOLOGIES.filter(
-        (tech) => project.techStack[tech.key]
-      );
-      return { ...project, technologies };
+      // Parse tech_stack if it's a string
+      const techStack =
+        typeof project.tech_stack === "string"
+          ? JSON.parse(project.tech_stack)
+          : project.tech_stack;
+
+      // Filter technologies based on techStack
+      const technologies = TECHNOLOGIES.filter((tech) => techStack[tech.key]);
+
+      // Transform to camelCase
+      return {
+        name: project.name,
+        durationLabel: project.duration_label,
+        yearEnd: project.year_end,
+        startDate: project.start_date,
+        endDate: project.end_date,
+        description: project.description,
+        techStack,
+        image: project.image_url,
+        technologies,
+      };
     });
+
+    console.log(projectsWithTech);
 
     res.render("project", {
       projects: projectsWithTech,
       technologies: TECHNOLOGIES,
-      projectFilled,
+      projectFilled: projectsWithTech.length > 0,
       path: "/project",
       title: "My Project",
       cssFile: "project",
@@ -185,11 +203,12 @@ const handleSubmitProject = async (req, res) => {
     const { name, start, end, description } = req.body;
     const { diff, yearEnd, startDate, endDate } = getDateLabel(start, end);
 
-    // Build techStack dynamically from TECHNOLOGIES
+    // Build techStack dynamically from TECHNOLOGIES,
     const techStack = TECHNOLOGIES.reduce(
       (stack, tech) => ({
         ...stack,
-        [tech.key]: req.body[tech.key] === "true",
+        // If checked = "" (empty string), if not checked = undefined
+        [tech.key]: req.body[tech.key] === "",
       }),
       {}
     );
@@ -225,7 +244,7 @@ const handleSubmitProject = async (req, res) => {
     console.log("Project submitted successfully");
 
     projectFilled = projects.length > 0;
-    console.log(projects);
+    // console.log(projects);
     res.redirect("/project");
   } catch (error) {
     console.error("Error submitting project form:", error);

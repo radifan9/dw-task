@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-    <!-- HTML HEAD -->
+		<!-- HTML HEAD -->
     {{>head }}
-  </head>
+  
+	
+	</head>
 	<body>
 		<div class="container-fluid  bg-body-secondary px-0 pb-5">
 			<!-- NAV BAR -->
       {{> navbar}}
       
+			
+			
 			<!-- MAIN PAGE -->
 			<!-- FORM PAGE -->
 			<div class="row d-flex justify-content-center bg-secondary-subtle">
@@ -43,6 +47,8 @@
 						<div class="row row-cols-2">
               {{#each technologies}}
                 
+							
+							
 							<div class="col">
 								<div class="input-group mb-3">
 									<input class="form-check-input" type="checkbox" value="" aria-label="checkbox for {{this.name}}" id="{{this.key}}" name="{{this.key}}" />
@@ -51,6 +57,8 @@
 							</div>
               {{/each}}
             
+						
+						
 						</div>
 					</div>
 					<div class="col-8 mx-auto mb-3">
@@ -64,14 +72,17 @@
 			</div>
 			<!-- Submitted Project, using grid 3 columns -->
       {{#if projectFilled}}
-        
 			<h2 class="mt-5 text-uppercase fw-bold text-center h-my-project">My Project</h2>
       {{/if}}
       
+			
+			
 			<div id="cardContainer" class="row row-cols-sm-3 g-5 mx-5 mb-5">
 				<!-- Added project dynamically -->
         {{#each projects}}
           
+				
+				
 				<div class="col card-custom">
 					<a href="/project/{{@index}}" class="text-decoration-none ">
 						<div class="card shadow single-card">
@@ -89,31 +100,43 @@
 								<div class="d-flex my-4">
                     {{#each technologies}}
                       {{#if (lookup ../this.techStack this.key)}}
-											<!-- If obj[key] = true, show tech -->
-                        
+											
+									
+									<!-- If obj[key] = true, show tech -->
 									<img class="mx-2" width="20px" src="/assets/icons/{{this.icon}}" alt="{{this.name}}" />
                       {{/if}}
                     {{/each}}
                   
+								
+								
 								</div>
 								<div class="d-flex justify-content-between gap-2">
-									
-									<!-- <button type="button" class="btn btn-dark py-0 w-100 fw-bold  custom-btn">edit</button>
-									<button type="button" class="btn btn-dark py-0 w-100 fw-bold custom-btn" ">delete</button> -->
-									<a href="/project/edit/{{@index}}" class="btn btn-dark py-0 w-100  custom-btn">edit</a>
-									<a href="/project/delete/{{@index}}" class="btn btn-dark py-0 w-100  custom-btn">delete</a>
+									<!-- <a href="/project/edit/{{this.id}}" class="btn btn-dark py-0 w-100 custom-btn">edit</a> -->
+									 <form onsubmit="return confirmDelete(event)" class="w-100">
+										<input type="hidden" name="projectId" value="{{this.id}}">
+											<button type="submit" class="btn btn-dark py-0 w-100 custom-btn">edit</button>
+									</form>
+									<form onsubmit="return confirmDelete(event)" class="w-100">
+										<input type="hidden" name="projectId" value="{{this.id}}">
+											<button type="submit" class="btn btn-dark py-0 w-100 custom-btn">delete</button>
+									</form>
+								</div>
 								</div>
 							</div>
-						</div>
-					</a>
-				</div>  
+						</a>
+					</div>  
         {{/each}}
       
 			
-			</div>
+			
+				
+				</div>
 
 			{{>footer}}
 
-		</div>
-	</body>
-</html>
+		
+			
+			</div>
+			<script src="/assets/js/delete-project.js"></script>
+		</body>
+	</html>

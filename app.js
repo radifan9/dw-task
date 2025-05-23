@@ -20,8 +20,7 @@ const db = new Pool({
 });
 
 // Data & Constants
-let visitors = [];
-let projects = [];
+// Boolean indicator, true = if there is a project
 let projectFilled;
 const TECHNOLOGIES = [
   // Add tech dynamically
@@ -32,34 +31,6 @@ const TECHNOLOGIES = [
   { name: "Tailwind", icon: "tailwindcss.svg", key: "tailwind" },
   { name: "Bootstrap", icon: "bootstrap.svg", key: "bootstrap" },
 ];
-
-// Add 2 project for ez development process
-projects.push({
-  name: "DumbWays Web App",
-  durationLabel: "7 month",
-  yearEnd: 2025,
-  startDate: "29 Apr 2025",
-  endDate: "20 Nov 2025",
-  description:
-    "App that used for dumbways student, it was deployed and can downloaded on playstore. Happy download.",
-  techStack: { nodejs: true, reactjs: true, nextjs: true, typescript: true },
-  image: "/assets/images/gameboy.webp",
-});
-
-projects.push({
-  name: "AirBNB",
-  durationLabel: "1 year",
-  yearEnd: 2026,
-  startDate: "29 Apr 2025",
-  endDate: "29 Apr 2026",
-  description:
-    "Airbnb adalah sebuah platform online yang memungkinkan orang untuk menyewakan atau memesan tempat menginap—mulai dari kamar di rumah pribadi, apartemen, vila, hingga penginapan unik seperti rumah pohon atau kapal.",
-  techStack: { nodejs: true, reactjs: true, typescript: true, tailwind: true },
-  image: "/assets/images/airbnb.png",
-});
-
-// Boolean indicator, true = if there is a project
-projectFilled = projects.length > 0;
 
 // Express setup
 app.set("view engine", "hbs");
@@ -94,9 +65,6 @@ function getDateLabel(startDate, endDate) {
 
   const formattedStart = dateFormatter.format(start);
   const formattedEnd = dateFormatter.format(end);
-
-  console.log(start);
-  console.log(end);
 
   const yearDiff = end.getFullYear() - start.getFullYear();
   const yearEnd = end.getFullYear();
@@ -138,6 +106,13 @@ const renderContact = (req, res) => {
 const handleSubmitContact = async (req, res) => {
   try {
     const { name, email, phoneNumber, subject, message } = req.body;
+
+    // Input Validation
+    if (!name || !email || !phoneNumber || !subject || !message) {
+      return res.status(400).send("All fields are required");
+    }
+
+    // Parameterized values
     const query = {
       text: "INSERT INTO contact (name, email, phone_number, subject, message) VALUES ($1, $2, $3, $4, $5)",
       values: [name, email, phoneNumber, subject, message],
@@ -148,7 +123,7 @@ const handleSubmitContact = async (req, res) => {
     res.redirect("/contact");
   } catch (error) {
     console.error("Error submitting contact form:", error);
-    res.status(500).send("Error submitting form");
+    res.status(500).send("Failed to submit form");
   }
 };
 
@@ -158,7 +133,7 @@ const renderProject = async (req, res) => {
     const projectsDB = await db.query("SELECT * FROM projects");
 
     // Transform snake_case to camelCase and parse tech_stack
-    const projectsWithTech = projectsDB.rows.map((project) => {
+    const formattedProjects = projectsDB.rows.map((project) => {
       // Parse tech_stack if it's a string
       const techStack =
         typeof project.tech_stack === "string"
@@ -168,8 +143,9 @@ const renderProject = async (req, res) => {
       // Filter technologies based on techStack
       const technologies = TECHNOLOGIES.filter((tech) => techStack[tech.key]);
 
-      // Transform to camelCase
+      // Transform to camelCase then return it
       return {
+        id: project.id,
         name: project.name,
         durationLabel: project.duration_label,
         yearEnd: project.year_end,
@@ -182,12 +158,11 @@ const renderProject = async (req, res) => {
       };
     });
 
-    console.log(projectsWithTech);
-
+    // Render view
     res.render("project", {
-      projects: projectsWithTech,
+      projects: formattedProjects,
       technologies: TECHNOLOGIES,
-      projectFilled: projectsWithTech.length > 0,
+      projectFilled: formattedProjects.length > 0,
       path: "/project",
       title: "My Project",
       cssFile: "project",
@@ -242,13 +217,27 @@ const handleSubmitProject = async (req, res) => {
 
     await db.query(query);
     console.log("Project submitted successfully");
-
-    projectFilled = projects.length > 0;
-    // console.log(projects);
     res.redirect("/project");
   } catch (error) {
     console.error("Error submitting project form:", error);
     res.status(200).send("Error submitting projects");
+  }
+};
+
+const deleteProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const query = {
+      text: "DELETE FROM projects WHERE id = $1",
+      values: [id],
+    };
+
+    await db.query(query);
+    res.status(200).json({ message: "Project deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting project:", error);
+    res.status(500).json({ error: "Failed to delete project" });
   }
 };
 
@@ -280,7 +269,7 @@ const renderProjectDetail = (req, res) => {
 app.route("/").get(renderIndex);
 app.route("/contact").get(renderContact).post(handleSubmitContact);
 app.route("/project").get(renderProject).post(handleSubmitProject);
-app.route("/project/:id").get(renderProjectDetail);
+app.route("/project/:id").get(renderProjectDetail).delete(deleteProject);
 
 // Server
 app.listen(port, () => {

@@ -15,7 +15,7 @@ const port = 3000;
 let visitors = [];
 let projects = [];
 let projectFilled;
-const TECHNOLOGIES = [
+const TECHNOLOGIES = [  // Add tech dynamically
   { name: "Node.js", icon: "node-js.svg", key: "nodejs" },
   { name: "React", icon: "react-js.svg", key: "reactjs" },
   { name: "Next.js", icon: "nextjs_icon_dark.svg", key: "nextjs" },

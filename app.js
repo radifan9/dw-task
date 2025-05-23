@@ -153,23 +153,31 @@ const handleSubmitContact = async (req, res) => {
 };
 
 // project
-const renderProject = (req, res) => {
-  // Map projects to include technologies array
-  const projectsWithTech = projects.map((project) => {
-    const technologies = TECHNOLOGIES.filter(
-      (tech) => project.techStack[tech.key]
-    );
-    return { ...project, technologies };
-  });
+const renderProject = async (req, res) => {
+  try {
+    const projectsDB = await db.query("SELECT * FROM projects");
+    console.log(projectsDB.rows);
 
-  res.render("project", {
-    projects: projectsWithTech,
-    technologies: TECHNOLOGIES,
-    projectFilled,
-    path: "/project",
-    title: "My Project",
-    cssFile: "project",
-  });
+    // Map projects to include technologies array
+    const projectsWithTech = projectsDB.rows.map((project) => {
+      const technologies = TECHNOLOGIES.filter(
+        (tech) => project.techStack[tech.key]
+      );
+      return { ...project, technologies };
+    });
+
+    res.render("project", {
+      projects: projectsWithTech,
+      technologies: TECHNOLOGIES,
+      projectFilled,
+      path: "/project",
+      title: "My Project",
+      cssFile: "project",
+    });
+  } catch (error) {
+    console.error("Error getting the projects from database: ", error);
+    res.status(500).send("Error getting the projects");
+  }
 };
 
 const handleSubmitProject = async (req, res) => {
@@ -181,7 +189,7 @@ const handleSubmitProject = async (req, res) => {
     const techStack = TECHNOLOGIES.reduce(
       (stack, tech) => ({
         ...stack,
-        [tech.key]: req.body[tech.key] === "",
+        [tech.key]: req.body[tech.key] === "true",
       }),
       {}
     );
@@ -200,7 +208,7 @@ const handleSubmitProject = async (req, res) => {
     // projects.push(project);
 
     const query = {
-      text: "INSERT INTO projects (name, duration_label, year_end, start_date, end_date, description, image_url) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+      text: "INSERT INTO projects (name, duration_label, year_end, start_date, end_date, description, tech_stack, image_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
       values: [
         name,
         diff,
@@ -208,6 +216,7 @@ const handleSubmitProject = async (req, res) => {
         startDate,
         endDate,
         description,
+        JSON.stringify(techStack),
         "https://picsum.photos/400/300",
       ],
     };

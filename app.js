@@ -172,34 +172,56 @@ const renderProject = (req, res) => {
   });
 };
 
-const handleSubmitProject = (req, res) => {
-  const { name, start, end, description } = req.body;
-  const { diff, yearEnd, startDate, endDate } = getDateLabel(start, end);
+const handleSubmitProject = async (req, res) => {
+  try {
+    const { name, start, end, description } = req.body;
+    const { diff, yearEnd, startDate, endDate } = getDateLabel(start, end);
 
-  // Build techStack dynamically from TECHNOLOGIES
-  const techStack = TECHNOLOGIES.reduce(
-    (stack, tech) => ({
-      ...stack,
-      [tech.key]: req.body[tech.key] === "",
-    }),
-    {}
-  );
+    // Build techStack dynamically from TECHNOLOGIES
+    const techStack = TECHNOLOGIES.reduce(
+      (stack, tech) => ({
+        ...stack,
+        [tech.key]: req.body[tech.key] === "",
+      }),
+      {}
+    );
 
-  const project = {
-    name,
-    durationLabel: diff,
-    yearEnd,
-    startDate,
-    endDate,
-    description,
-    techStack,
-    image: "https://picsum.photos/400/300",
-  };
+    const project = {
+      name,
+      durationLabel: diff,
+      yearEnd,
+      startDate,
+      endDate,
+      description,
+      techStack,
+      image: "https://picsum.photos/400/300",
+    };
 
-  projects.push(project);
-  projectFilled = projects.length > 0;
-  console.log(projects);
-  res.redirect("/project");
+    // projects.push(project);
+
+    const query = {
+      text: "INSERT INTO projects (name, duration_label, year_end, start_date, end_date, description, image_url) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+      values: [
+        name,
+        diff,
+        yearEnd,
+        startDate,
+        endDate,
+        description,
+        "https://picsum.photos/400/300",
+      ],
+    };
+
+    await db.query(query);
+    console.log("Project submitted successfully");
+
+    projectFilled = projects.length > 0;
+    console.log(projects);
+    res.redirect("/project");
+  } catch (error) {
+    console.error("Error submitting project form:", error);
+    res.status(200).send("Error submitting projects");
+  }
 };
 
 // project-detail

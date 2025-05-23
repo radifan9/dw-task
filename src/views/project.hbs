@@ -72,7 +72,7 @@
 				<!-- Added project dynamically -->
         {{#each projects}}
           
-				<div class="col">
+				<div class="col card-custom">
 					<a href="/project/{{@index}}" class="text-decoration-none ">
 						<div class="card shadow single-card">
 							<div class="container mt-2">
@@ -97,8 +97,11 @@
                   
 								</div>
 								<div class="d-flex justify-content-between gap-2">
-									<button type="button" class="btn btn-dark py-0 w-100 fw-bold  custom-btn">edit</button>
-									<button type="button" class="btn btn-dark py-0 w-100 fw-bold custom-btn" ">delete</button>
+									
+									<!-- <button type="button" class="btn btn-dark py-0 w-100 fw-bold  custom-btn">edit</button>
+									<button type="button" class="btn btn-dark py-0 w-100 fw-bold custom-btn" ">delete</button> -->
+									<a href="/project/edit/{{@index}}" class="btn btn-dark py-0 w-100  custom-btn">edit</a>
+									<a href="/project/delete/{{@index}}" class="btn btn-dark py-0 w-100  custom-btn">delete</a>
 								</div>
 							</div>
 						</div>

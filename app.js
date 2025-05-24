@@ -1,27 +1,12 @@
+// 1. Import statements
 import express from "express";
 import { Pool } from "pg";
 import morgan from "morgan";
 import hbs from "hbs";
 import path from "path";
 import { fileURLToPath } from "url";
-// import { title } from "process";
 
-// Configuration
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const app = express();
-const port = 3000;
-const db = new Pool({
-  user: "postgres",
-  password: "ms11drag00nsql",
-  host: "localhost",
-  port: 5432,
-  database: "b61-personal-web",
-});
-
-// Data & Constants
-// Boolean indicator, true = if there is a project
-let projectFilled;
+// 2. Contants and Configuration
 const TECHNOLOGIES = [
   // Add tech dynamically
   { name: "Node.js", icon: "node-js.svg", key: "nodejs" },
@@ -32,16 +17,33 @@ const TECHNOLOGIES = [
   { name: "Bootstrap", icon: "bootstrap.svg", key: "bootstrap" },
 ];
 
-// Express setup
+const CONFIG = {
+  nodePort: 3000,
+  database: {
+    user: "postgres",
+    password: "ms11drag00nsql",
+    host: "localhost",
+    port: 5432,
+    database: "b61-personal-web",
+  },
+};
+
+// 3. App Setup
+const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const db = new Pool(CONFIG.database);
+
+// 4. Middleware Setup
 app.set("view engine", "hbs");
 app.set("views", "src/views");
-
-// Static files, middleware, helper
 app.use(morgan("dev"));
 app.use("/assets", express.static("src/assets"));
 app.use("/bootstrap", express.static("node_modules/bootstrap/dist"));
 app.use(express.urlencoded({ extended: false }));
 hbs.registerPartials(path.join(__dirname, "src/views/partials"));
+
+// 5. Handlebars Helpers
 // Equality comparison, return true if equal
 hbs.registerHelper("eq", function (a, b) {
   return a === b;
@@ -51,7 +53,7 @@ hbs.registerHelper("lookup", function (obj, key) {
   return obj[key];
 });
 
-// Utility Function
+// 6. Utility Functions
 function getDateLabel(startDate, endDate) {
   const start = new Date(startDate);
   const end = new Date(endDate);
@@ -84,7 +86,7 @@ function getDateLabel(startDate, endDate) {
   };
 }
 
-// --- Route Handlers ---
+// 7. Route Handlers
 // index
 const renderIndex = (req, res) => {
   res.render("index", {
@@ -138,7 +140,6 @@ const renderProject = async (req, res) => {
       // Filter technologies based on techStack
       const technologies = TECHNOLOGIES.filter((tech) => techStack[tech.key]);
 
-      // Transform to camelCase then return it
       return {
         id: project.id,
         name: project.name,
@@ -156,7 +157,7 @@ const renderProject = async (req, res) => {
     // Render view
     res.render("project", {
       projects: formattedProjects,
-      technologies: TECHNOLOGIES,
+      technologies: TECHNOLOGIES, // Here we use TECHNOLOGIES for render all tech
       projectFilled: formattedProjects.length > 0,
       path: "/project",
       title: "My Project",
@@ -237,7 +238,7 @@ const deleteProject = async (req, res) => {
 // project-detail
 const renderProjectDetail = (req, res) => {
   const id = parseInt(req.params.id);
-  const project = projects.find((_, index) => index === id);
+  const project = projectsDB.find((_, index) => index === id);
 
   // Redirect if project not found
   if (!project) {
@@ -258,13 +259,13 @@ const renderProjectDetail = (req, res) => {
   });
 };
 
-// Routes
+// 8. Routes
 app.route("/").get(renderIndex);
 app.route("/contact").get(renderContact).post(handleSubmitContact);
 app.route("/project").get(renderProject).post(handleSubmitProject);
 app.route("/project/:id").get(renderProjectDetail).delete(deleteProject);
 
-// Server
-app.listen(port, () => {
-  console.log(`Server running on http://127.0.0.1:${port}`);
+// 9. Server Start
+app.listen(CONFIG.nodePort, () => {
+  console.log(`Server running on http://127.0.0.1:${CONFIG.nodePort}`);
 });

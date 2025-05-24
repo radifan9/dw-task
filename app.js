@@ -86,13 +86,35 @@ function getDateLabel(startDate, endDate) {
   };
 }
 
+// Transform snake_case to camelCase and parse tech_stack
+function formatProject(projectsDB) {
+  const formattedProjects = projectsDB.rows.map((project) => {
+    const techStack = project.tech_stack;
+    // Filter technologies based on techStack
+    const technologies = TECHNOLOGIES.filter((tech) => techStack[tech.key]);
+
+    return {
+      id: project.id,
+      name: project.name,
+      durationLabel: project.duration_label,
+      yearEnd: project.year_end,
+      startDate: project.start_date,
+      endDate: project.end_date,
+      description: project.description,
+      techStack,
+      image: project.image_url,
+      technologies,
+    };
+  });
+  return formattedProjects;
+}
 // 7. Route Handlers
 // index
 const renderIndex = (req, res) => {
   res.render("index", {
     path: "/",
     title: "Personal Website",
-    cssFile: "index",
+    cssFiles: ["index.css", "footer.css"],
   });
 };
 
@@ -101,7 +123,7 @@ const renderContact = (req, res) => {
   res.render("contact", {
     path: "/contact",
     title: "Contact Me",
-    cssFile: "contact",
+    cssFiles: ["contact.css", "footer.css"],
   });
 };
 
@@ -133,26 +155,7 @@ const handleSubmitContact = async (req, res) => {
 const renderProject = async (req, res) => {
   try {
     const projectsDB = await db.query("SELECT * FROM projects");
-
-    // Transform snake_case to camelCase and parse tech_stack
-    const formattedProjects = projectsDB.rows.map((project) => {
-      const techStack = project.tech_stack;
-      // Filter technologies based on techStack
-      const technologies = TECHNOLOGIES.filter((tech) => techStack[tech.key]);
-
-      return {
-        id: project.id,
-        name: project.name,
-        durationLabel: project.duration_label,
-        yearEnd: project.year_end,
-        startDate: project.start_date,
-        endDate: project.end_date,
-        description: project.description,
-        techStack,
-        image: project.image_url,
-        technologies,
-      };
-    });
+    const formattedProjects = formatProject(projectsDB);
 
     // Render view
     res.render("project", {
@@ -161,7 +164,7 @@ const renderProject = async (req, res) => {
       projectFilled: formattedProjects.length > 0,
       path: "/project",
       title: "My Project",
-      cssFile: "project",
+      cssFiles: ["project.css", "footer.css"],
     });
   } catch (error) {
     console.error("Error getting the projects from database: ", error);
@@ -221,7 +224,6 @@ const handleSubmitProject = async (req, res) => {
 const deleteProject = async (req, res) => {
   try {
     const { id } = req.params;
-
     const query = {
       text: "DELETE FROM projects WHERE id = $1",
       values: [id],
@@ -236,27 +238,38 @@ const deleteProject = async (req, res) => {
 };
 
 // project-detail
-const renderProjectDetail = (req, res) => {
-  const id = parseInt(req.params.id);
-  const project = projectsDB.find((_, index) => index === id);
+const renderProjectDetail = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const projectsDB = await db.query("SELECT * FROM projects");
+    const formattedProject = formatProject(projectsDB);
 
-  // Redirect if project not found
-  if (!project) {
-    return res.redirect("/project");
+    const project = formattedProject.find((el) => el.id === id);
+    if (project) {
+      console.log(`project ${id} found!`);
+    }
+
+    // Redirect if project not found
+    if (!project) {
+      return res.redirect("/project");
+    }
+
+    // Use this object to store tech name, icon name
+    const technologies = TECHNOLOGIES.filter(
+      // Pass(lolos filter) if project with key correspond to value 'true'
+      (tech) => project.techStack[tech.key]
+    );
+
+    res.render("project-detail", {
+      project: { ...project, technologies },
+      path: "/project",
+      title: `${project.name} | Project Detail`,
+      cssFiles: ["project-detail"],
+    });
+  } catch (error) {
+    console.error("Error getting the database:", error);
+    res.status(500).send("Failed to get database");
   }
-
-  // Use this object to store tech name, icon name
-  const technologies = TECHNOLOGIES.filter(
-    // Pass(lolos filter) if project with key correspond to value 'true'
-    (tech) => project.techStack[tech.key]
-  );
-
-  res.render("project-detail", {
-    project: { ...project, technologies },
-    path: "/project",
-    title: `${project.name} | Project Detail`,
-    cssFile: "project-detail",
-  });
 };
 
 // 8. Routes

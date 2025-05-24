@@ -81,10 +81,8 @@
 				<!-- Added project dynamically -->
         {{#each projects}}
           
-				
-				
 				<div class="col card-custom">
-					<a href="/project/{{@index}}" class="text-decoration-none ">
+					<a href="/project/{{this.id}}" class="text-decoration-none ">
 						<div class="card shadow single-card">
 							<div class="container mt-2">
 								<img src="{{this.image}}" class="card-img fixed-img" alt="{{this.name}}" />
@@ -107,12 +105,10 @@
                       {{/if}}
                     {{/each}}
                   
-								
-								
 								</div>
 								<div class="d-flex justify-content-between gap-2">
 									<!-- <a href="/project/edit/{{this.id}}" class="btn btn-dark py-0 w-100 custom-btn">edit</a> -->
-									 <form onsubmit="return confirmDelete(event)" class="w-100">
+									<form onsubmit="return confirmDelete(event)" class="w-100">
 										<input type="hidden" name="projectId" value="{{this.id}}">
 											<button type="submit" class="btn btn-dark py-0 w-100 custom-btn">edit</button>
 									</form>

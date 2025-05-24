@@ -134,12 +134,7 @@ const renderProject = async (req, res) => {
 
     // Transform snake_case to camelCase and parse tech_stack
     const formattedProjects = projectsDB.rows.map((project) => {
-      // Parse tech_stack if it's a string
-      const techStack =
-        typeof project.tech_stack === "string"
-          ? JSON.parse(project.tech_stack)
-          : project.tech_stack;
-
+      const techStack = project.tech_stack;
       // Filter technologies based on techStack
       const technologies = TECHNOLOGIES.filter((tech) => techStack[tech.key]);
 
@@ -198,8 +193,6 @@ const handleSubmitProject = async (req, res) => {
       techStack,
       image: "https://picsum.photos/400/300",
     };
-
-    // projects.push(project);
 
     const query = {
       text: "INSERT INTO projects (name, duration_label, year_end, start_date, end_date, description, tech_stack, image_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
